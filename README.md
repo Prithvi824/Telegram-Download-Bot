@@ -8,6 +8,8 @@
 
 I have made you a Bot capable of downloading videos and Photos from Instagram, Pinterest and Youtube
 
+**Since i am a student i don't really have a server to keep thi sbot running 24/7 and hence, The bot is currently offline**
+
 As of January 2024 I am a Student at Galgotias University pursuing my BCA.
 
 The motive of creating this bot was to challenge my coding skills and the challenge was tough i won't lie.
