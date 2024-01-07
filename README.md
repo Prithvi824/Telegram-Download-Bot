@@ -14,7 +14,7 @@ The motive of creating this bot was to challenge my coding skills and the challe
 
 I learnt some things and have some features which can be implemented to upgrade this bot functionality.
 
-*My Linkedin Profile* &nbsp;[LinkedIN](www.linkedin.com/in/prithvi-srivastava-a974092a6).
+*My Linkedin Profile* &nbsp;[LinkedIN](https://www.linkedin.com/in/prithvi-srivastava-a974092a6).
 
 # &nbsp; Introduction
 
