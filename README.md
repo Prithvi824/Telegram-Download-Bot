@@ -1,6 +1,6 @@
 <br>![python-telegram-bot Logo](https://github.com/Prithvi824/Telegram-Download-Bot/blob/main/github/header.png?raw=true)
 
-[![Supported Python versions](https://img.shields.io/pypi/pyversions/python-telegram-bot.svg)](https://pypi.org/project/python-telegram-bot/)
+![Supported Python versions](https://img.shields.io/pypi/pyversions/python-telegram-bot.svg)
 &nbsp;&nbsp;
 [![Telegram Bot link](https://img.shields.io/badge/Telegram-bot-blue.svg?logo=telegram)](https://t.me/Media_share_and_download_bot)
 &nbsp;&nbsp;
