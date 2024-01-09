@@ -1,20 +1,20 @@
 import os
+
+import telegram
 from downloader import bot_downloader
-from dotenv import load_dotenv
+import logging
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
+import time
 
-import logging
+# logging.basicConfig(
+#     format='%(asctime)s - %(message)s',
+#     level=logging.INFO
+# )
 
-logging.basicConfig(
-    format='%(asctime)s - %(message)s',
-    level=logging.INFO
-)
-
-load_dotenv()
 
 wait_gif = 'files\\wait.gif'
-TOKEN = os.getenv('Token')
+TOKEN = '6757216906:AAE5MVu2pDYfPoRAbEw5E36Ipqo1uHhVZYk'#input("Enter the bot token: ")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = """
@@ -54,28 +54,50 @@ async def download_reel(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
     url = update.message.text
     downloader = bot_downloader()
+    max_tries = 3
 
-    try:
-        if url.startswith('https://youtu'):
-            path = downloader.Download_video_YT(url)
-            await context.bot.send_video(chat_id=update.effective_chat.id, video=path, caption='Here is your Youtube video')
-            await context.bot.send_document(chat_id=update.effective_chat.id, document=path, caption='Here is your Youtube video in docs just in case the aspect ratio is not good')
-            os.remove(path)
+    if url.startswith('https://you') or url.startswith('https://m.you'):
+        path = downloader.Download_video_YT(url)
+        for _ in range(max_tries):
+            try:
+                await context.bot.send_video(chat_id=update.effective_chat.id, video=path, caption='Here is your Youtube video',pool_timeout=30.0,write_timeout=30.0)
+                print(f"sent on {_} try")
+                break
+            except telegram.error.TimedOut as err:
+                print("Request timed out. Retrying after a delay...")
+                time.sleep(2)
+        os.remove(path)
 
-        elif url.startswith('https://www.instagram.com/reel/'):
-            path = downloader.Download_video_Insta(url)
-            await context.bot.send_video(chat_id=update.effective_chat.id, video=path, caption='Here is your Instagram Reel')
-            os.remove(path)
+    elif url.startswith('https://www.instagram.com/reel/'):
+        path = downloader.Download_video_Insta(url)
+        for _ in range(max_tries):
+            try:
+                await context.bot.send_video(chat_id=update.effective_chat.id, video=path, caption='Here is your Instagram Reels',pool_timeout=30.0,write_timeout=30.0)
+                print(f"sent on {_} try")
+                break
+            except telegram.error.TimedOut as err:
+                print("Request timed out. Retrying after a delay...")
+                time.sleep(2)
+        os.remove(path)
 
-        elif url.startswith('https://pin'):
-            path = downloader.Download_Pinterest(url)
-            if path.endswith('.png'):
-                await context.bot.send_photo(chat_id=update.effective_chat.id, photo=path, caption='Here is your Pinterest Pin')
-            else:
-                await context.bot.send_video(chat_id=update.effective_chat.id, video=path, caption='Here is your Pinterest Video')
-            os.remove(path)
-    except:
+    elif url.startswith('https://pin'):
+        path = downloader.Download_Pinterest(url)
+        if path.endswith('.png'):
+            await context.bot.send_photo(chat_id=update.effective_chat.id, photo=path, caption='Here is your Pinterest Pin',write_timeout=10.0,pool_timeout=10.0)
+        else:
+            for _ in range(max_tries):
+                try:
+                    await context.bot.send_video(chat_id=update.effective_chat.id, video=path, caption='Here is your Pinterest video',pool_timeout=30.0,write_timeout=30.0)
+                    print(f"sent on {_} try")
+                    break
+                except telegram.error.TimedOut as err:
+                    print("Request timed out. Retrying after a delay...")
+                    time.sleep(2)
+        os.remove(path)
+
+    else:
         await context.bot.send_message(chat_id=update.effective_chat.id,text='Sorry My developer is lazy he hasn\'t made me capable of chating yet, Please send a valid link only',reply_to_message_id=update.message.id)
+
 
 if __name__ == '__main__':
     application = ApplicationBuilder().token(TOKEN).build()
