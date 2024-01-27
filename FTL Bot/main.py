@@ -2,19 +2,13 @@ import os
 
 import telegram
 from downloader import bot_downloader
-import logging
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
 import time
 
-# logging.basicConfig(
-#     format='%(asctime)s - %(message)s',
-#     level=logging.INFO
-# )
 
-
-wait_gif = 'files\\wait.gif'
-TOKEN = '6757216906:AAE5MVu2pDYfPoRAbEw5E36Ipqo1uHhVZYk'#input("Enter the bot token: ")
+wait_gif = 'FTL Bot\\files\\wait.gif'
+TOKEN = input("Enter the bot token: ")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = """
@@ -58,7 +52,7 @@ async def handle_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if url.startswith('https://you') or url.startswith('https://m.you'):
         path = downloader.Download_video_YT(url)
-        for _ in range(max_tries):
+        for _ in range(1, max_tries+1):
             try:
                 await context.bot.send_video(chat_id=update.effective_chat.id, video=path, caption='Here is your Youtube video',pool_timeout=30.0,write_timeout=30.0)
                 print(f"sent on {_} try")
